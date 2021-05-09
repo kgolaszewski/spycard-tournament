@@ -17,7 +17,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "node ./src/PVP/pvpServer.js & react-scripts start && fg",
+    "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "server": "node ./src/PVP/pvpServer.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -6,6 +6,7 @@ var {
 } = require('./EvaluateCombat');
 
 const PORT = process.env.PORT || 4000
+// const PORT = 4000
 
 const new_blank_stats = () => ({
     "heal": 0, "lifesteal": 0, "numb": 0, "atk": 0, "def": 0, "numb_def": 0, "atk_or_def": []
@@ -128,7 +129,8 @@ var app  = require('express')();
 var http = require('http').Server(app);
 var io   = require('socket.io')(http, 
     // { cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] } }
-    { cors: { origin: "*:*", methods: ["GET", "POST"], pingTimeout: 7000, pingInterval: 3000 } }
+    { cors: { origin: "*", methods: ["GET", "POST"] } }
+    // { cors: { origin: "*:*", methods: ["GET", "POST"], pingTimeout: 7000, pingInterval: 3000 } }
 );
 
 // rooms.js 
