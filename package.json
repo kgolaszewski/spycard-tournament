@@ -17,8 +17,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "start": "react-scripts start",
+    "localboot": "concurrently \"npm run server\" \"react-scripts start\"",
     "server": "node ./src/PVP/pvpServer.js",
+    "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
