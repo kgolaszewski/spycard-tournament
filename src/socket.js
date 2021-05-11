@@ -3,6 +3,7 @@ const PORT = process.env.PORT || 4000
 const URL = process.env.NODE_ENV !== "production" ? 
     `http://localhost:${PORT}` 
         : 
-    `https://spycard-socketserver.herokuapp.com`
+    "https://spycard-socketserver.herokuapp.com/"
 
 export const socket = io(URL);
+
