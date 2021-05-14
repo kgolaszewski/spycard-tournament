@@ -2,7 +2,7 @@ import './App.css';
 // import bestiary from './SpyCards_Bestiary';
 import React, { useState, useEffect } from 'react';
 import { socket } from './socket';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Icon(props) {
     let img_folder = process.env.PUBLIC_URL
@@ -39,6 +39,10 @@ function PvpUI() {
     const img_folder = process.env.PUBLIC_URL
     const location = useLocation()
     const user = sessionStorage.getItem("username")
+    const localdeck = sessionStorage.getItem("deck") === "DefaultDeck" ? 
+        '{"Chomper":12,"Zasp":1,"Mothiva":1,"Mother Chomper":1}'
+            : 
+        localStorage.getItem(`spydeck_${sessionStorage.getItem("deck")}`)
     const roomId = location.state?.roomId
 
     let [ready, setReady] = useState(false)
@@ -68,9 +72,7 @@ function PvpUI() {
         socket.emit("player-join", {
             room: roomId,
             player: user,
-            deck: sessionStorage.getItem("deck") === "DefaultDeck" ? 
-                '{"Chomper":12,"Zasp":1,"Mothiva":1,"Mother Chomper":1}'
-                : localStorage.getItem(`spydeck_${sessionStorage.getItem("deck")}`)
+            deck: localdeck
         })
     
         socket.on("match-start", (data) => { 
@@ -82,6 +84,8 @@ function PvpUI() {
             setReady(true) 
             setPhase(phase)
             setTurn(turn)
+            setResult("")
+            setSubmitted(false)
         })
     
         socket.on("all-moves-submitted", data => {
@@ -199,17 +203,33 @@ function PvpUI() {
                 ))
             }
             </div> :
-            <div>
+            <div className="mt-1" style={{minHeight: "185px"}}>
                 {
                 result === "W" ? 
-                    <p className="" style={{fontSize: "36px"}}>
+                    <p className="" style={{fontSize: "30px"}}>
                         <b>Congratulations!</b><br />You win!
                     </p> 
                         :
-                    <p className="" style={{fontSize: "36px"}}>
+                    <p className="" style={{fontSize: "30px"}}>
                         <b>GAME OVER</b><br />You lose.
                     </p> 
                 }
+                <button 
+                    className="btn btn-primary btn-sm" 
+                    style={{minWidth:"150px"}} 
+                    onClick={() => {socket.emit("rematch-request", {
+                        room: roomId,
+                        player: user,
+                        deck: localdeck
+                    })}}
+                >
+                    Request Rematch
+                </button><br />
+                <Link to="/pvplobby">
+                    <button className="btn btn-info btn-sm mt-1" style={{minWidth:"150px"}}>
+                        Leave Room
+                    </button>
+                </Link>
             </div>
             }
 
@@ -303,8 +323,8 @@ function PvpUI() {
         </div>
 
         </div>) : 
-        (<div>
-            Waiting for second player to join...
+        (<div className="App mt-5">
+            <h3>Waiting for second player to join...</h3>
         </div>)
         }
         </div>

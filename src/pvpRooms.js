@@ -24,7 +24,12 @@ function PvpRooms() {
     }, [])
 
     return (
-        <div className="mt-3" style={{textAlign: "center"}}>
+        <div style={{textAlign: "center"}}>
+            <div style={{textAlign: "left"}}>
+                <Link to="/pvplobby" style={{textAlign: "left"}}>
+                    <button className="btn btn-primary ml-1">←</button>
+                </Link>
+            </div>
             <h1 className="mb-5" style={{textAlign: "center"}}>Room List</h1> 
             <div>
             {
