@@ -56,6 +56,33 @@ let nonbosses  = Object.keys(bestiary)
     .map(e => bestiary[e])
     .filter(card => ["effect", "attacker"].includes(card.type))
 
+
+function BackButton(props) {
+    let previousView = (view) => {
+        if (view === "Miniboss") { return "Boss" }
+        if (view === "Nonboss") { return "Miniboss" }
+        if (view === "ConfirmMenu") { return "Nonboss"}
+    }
+    return (
+        <div>
+        { props.view === "Boss" ? 
+        (
+        <Link to="/">
+            <button className="btn btn-primary ml-1">←</button>
+        </Link> 
+        ) : (
+        <button 
+            className="btn btn-primary ml-1"
+            onClick={() => props.setCurrentView(previousView(props.view))}
+        >
+            ←
+        </button>
+        )
+        }
+        </div>
+    )
+}
+
 function BosstypeMenu(props) {
     let img_folder = process.env.PUBLIC_URL
     let name_to_img = (cardname) => {
@@ -63,14 +90,8 @@ function BosstypeMenu(props) {
         return `${img_folder}/spycard_imgs/${image_name}.png`
     }
 
-    // let card_limit = props.limit
-    // let [selected, setSelected] = useState([])
-
     return (
-        <div className="row ml-3 mt-3" 
-            // style={{maxWidth: "1430px"}}
-            style={{width: "98%"}}
-        >
+        <div className="row ml-3 mt-3" style={{width: "98%"}} >
         {
             props.boss_group.map(e => (
                 <div className="row mt-1 ml-1 mr-4">
@@ -115,9 +136,6 @@ function BossMenu(props) {
     
     return (
         <div className="">
-            <Link to="/">
-                <button className="btn btn-primary ml-1">←</button>
-            </Link>
             <h1 style={{textAlign: "center"}}>Boss Cards</h1> 
             <BosstypeMenu 
                 boss_group={bosses} 
@@ -163,29 +181,7 @@ function MinibossMenu(props) {
     
     return (
         <div>
-            <button 
-                className="btn btn-primary ml-1"
-                onClick={() => props.setCurrentView("Boss")}
-            >
-                ←
-            </button>
             <h1 style={{textAlign: "center"}}>Miniboss Cards</h1> 
-            {/* <div className="row mt-1" style={{justifyContent: "center"}}>
-                <button 
-                    className={`
-                        btn 
-                        ${valid()? "btn-success" : "btn-info"}
-                    `}
-                    disabled={valid()? "" : "disabled"}
-                    onClick={() => props.setCurrentView("Nonboss")}
-                    style={{minWidth: "150px"}}
-                >
-                    { valid() ?
-                        "Add Minibosses to Deck" :
-                        "Please select 2 different Miniboss cards."
-                    }
-                </button>
-            </div> */}
             <BosstypeMenu 
                 boss_group={minibosses} 
                 group={"miniboss"}
@@ -194,10 +190,8 @@ function MinibossMenu(props) {
             />
             <div className="row mt-4" style={{justifyContent: "center"}}>
             <button 
-                className={`
-                    btn 
+                className={`mb-5 btn 
                     ${valid()? "btn-success" : "btn-info"}
-                    mb-5
                 `}
                 disabled={valid()? "" : "disabled"}
                 onClick={() => props.setCurrentView("Nonboss")}
@@ -231,30 +225,7 @@ function NonBossMenu(props) {
 
     return (
         <div style={{width: "98%"}}>
-        <button 
-            className="btn btn-primary ml-1"
-            onClick={() => props.setCurrentView("Miniboss")}
-        >
-            ←
-        </button>
         <h1 style={{textAlign: "center"}}>Attack and Effect Cards</h1>
-        {/* <div className="row mt-3" style={{justifyContent: "center"}}>
-            <button 
-                className={`btn ${valid()? "btn-success" : "btn-info"}`}
-                disabled={valid()? "" : "disabled"}
-                onClick={() => props.setCurrentView("Nonboss")}
-                style={{minWidth: "150px"}}
-                onClick={() => props.setCurrentView("ConfirmMenu")}
-            >
-                { valid() ?
-                    "Submit Deck" 
-                        :
-                    `Please ${remaining_selections > 0 ? "select" : "remove"} ${ Math.abs(remaining_selections)} 
-                    more card${ Math.abs(remaining_selections) > 1? "s" : "" }.
-                    `
-                }
-            </button>
-        </div> */}
         <div className="row ml-3 mt-3" >
         {
             nonbosses.map((card, i) => (
@@ -334,7 +305,6 @@ function ConfirmMenu(props) {
         ...Object.keys(props.selected["nonboss"])
             .filter(e => was_selected("nonboss", e)).map(e => [e, props.selected["nonboss"][e]]),
     ]
-    // console.log("final_selection", final_selection)
     let final_deck = final_selection.reduce((tot, arr) => {
         tot[arr[0]] = arr[1]; 
         return tot; 
@@ -353,16 +323,10 @@ function ConfirmMenu(props) {
 
     return (
         <div>
-            <button 
-                className="btn btn-primary ml-1"
-                onClick={() => props.setCurrentView("Nonboss")}
-            >
-                ←
-            </button>
             <h1 style={{textAlign: "center"}}>Deck List</h1>
             {
                 final_selection.map(e => (
-                    <div className="row">
+                    <div className="row" style={{textAlign: "left"}}>
                         <div className="offset-5 col-2">
                             <b>{e[0]}: </b>
                         </div>
@@ -392,8 +356,6 @@ function ConfirmMenu(props) {
 }
 
 function DeckBuilder() {
-    // let initialSelected = Object.keys(bestiary).reduce((tot, e) => { tot[e] = 0; return tot; }, {})
-
     let initialSelected = {
         "boss": bosses.reduce((tot, card) => { tot[card.name] = 0; return tot; }, {}),
         "miniboss": minibosses.reduce((tot, card) => { tot[card.name] = 0; return tot; }, {}),
@@ -403,8 +365,6 @@ function DeckBuilder() {
     let [currentView, setCurrentView] = useState("Boss")
     let [selected, setSelected] = useState(initialSelected)
 
-    // console.log(initialSelected)
-
     let change_quantity = (group, cardname, amount, limit) => {
         setSelected({
             ...selected,
@@ -413,42 +373,46 @@ function DeckBuilder() {
                 [cardname]: Math.max(0, Math.min(limit, selected[group][cardname] + amount)),
             }
         })
-        // console.log(cardname, selected[cardname], selected[cardname] + amount)
     }
 
     return (
-        <div>
-        {
-            currentView === "Boss" ?
-                (
-                <BossMenu 
-                    selected={selected} 
-                    change_quantity={change_quantity}
-                    setCurrentView={setCurrentView}
-                />) :
-            currentView === "Miniboss" ? 
-                (
-                <MinibossMenu 
-                    selected={selected} 
-                    change_quantity={change_quantity}
-                    setCurrentView={setCurrentView}
-                />
-                ) : 
-            currentView === "Nonboss" ? (
-                <NonBossMenu 
-                    selected={selected} 
-                    change_quantity={change_quantity}
-                    setCurrentView={setCurrentView}
-                    group={"nonboss"}
-                />
-                ) : 
-                (
-                <ConfirmMenu 
-                    selected={selected} 
-                    setCurrentView={setCurrentView}
-                />
-                )
-        }
+        <div className="App row">
+            <div className="col-1" style={{textAlign: "left"}}>
+                <BackButton setCurrentView={setCurrentView} view={currentView} />
+            </div>
+            <div className="col-10">
+            {
+                currentView === "Boss" ?
+                    (
+                    <BossMenu 
+                        selected={selected} 
+                        change_quantity={change_quantity}
+                        setCurrentView={setCurrentView}
+                    />) :
+                currentView === "Miniboss" ? 
+                    (
+                    <MinibossMenu 
+                        selected={selected} 
+                        change_quantity={change_quantity}
+                        setCurrentView={setCurrentView}
+                    />
+                    ) : 
+                currentView === "Nonboss" ? (
+                    <NonBossMenu 
+                        selected={selected} 
+                        change_quantity={change_quantity}
+                        setCurrentView={setCurrentView}
+                        group={"nonboss"}
+                    />
+                    ) : 
+                    (
+                    <ConfirmMenu 
+                        selected={selected} 
+                        setCurrentView={setCurrentView}
+                    />
+                    )
+            }
+            </div>
         </div>
     )
 }

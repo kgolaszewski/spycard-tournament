@@ -71,6 +71,17 @@ function Lobby(props) {
             )
             }
             <br />
+            <Link to="/howtoplay">
+            <button className="btn btn-info mt-1" style={{minWidth: "180px"}}>
+                Learn How to Play
+            </button>
+            </Link>
+            <br />
+            <Link to="/effectstutorial">
+            <button className="btn btn-info mt-1" style={{minWidth: "180px"}}>
+                Learn Card Keywords
+            </button>
+            </Link>
 
         </div>
     )

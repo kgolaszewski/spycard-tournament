@@ -24,13 +24,17 @@ function PvpRooms() {
     }, [])
 
     return (
-        <div style={{textAlign: "center"}}>
-            <div style={{textAlign: "left"}}>
-                <Link to="/pvplobby" style={{textAlign: "left"}}>
-                    <button className="btn btn-primary ml-1">←</button>
-                </Link>
-            </div>
-            <h1 className="mb-5" style={{textAlign: "center"}}>Room List</h1> 
+        <div className="App row">
+        <div 
+            className="col-1" 
+            style={{textAlign: "left"}}>
+            <Link to="/pvplobby" style={{textAlign: "left"}}>
+                <button className="btn btn-primary ml-1">←</button>
+            </Link>
+        </div>
+
+        <div className="col-10" style={{textAlign: "center"}}>
+            <h1 className="mt-3 mb-5" style={{textAlign: "center"}}>Room List</h1> 
             <div>
             {
                 rooms.map(e => (
@@ -57,6 +61,7 @@ function PvpRooms() {
                 ))
             }
             </div>
+        </div>
         </div>
     )
 }

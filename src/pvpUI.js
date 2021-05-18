@@ -4,6 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { socket } from './socket';
 import { Link, useLocation } from "react-router-dom";
 
+// import io from "socket.io-client";
+// const URL = "https://spycard-socketserver.herokuapp.com/"
+// const DEV_URL = "http://localhost:4000"
+// export const socket = io(URL);
+
+
+
 function Icon(props) {
     let img_folder = process.env.PUBLIC_URL
     return (<img alt="" width="45px" src={`${img_folder}/spycard_imgs/${props.name}_icon.png`} />)

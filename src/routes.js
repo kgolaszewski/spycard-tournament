@@ -9,6 +9,8 @@ import DeckBuilder from './DeckBuilder'
 import PvpLobby from './pvpLobby'
 import PvpRooms from './pvpRooms'
 import PvpUi from './pvpUI'
+import EffectsTutorial from './EffectsTutorial';
+import HowToPlay from './HowToPlay';
 
 const Hoc = props => props.children;
 
@@ -20,6 +22,8 @@ const BaseRouter = () => (
         <Route exact path="/pvplobby" component={PvpLobby} />
         <Route exact path="/pvprooms" component={PvpRooms} />
         <Route exact path="/pvpvs" component={PvpUi} />
+        <Route exact path="/effectstutorial" component={EffectsTutorial} />
+        <Route exact path="/howtoplay" component={HowToPlay} />
     </Hoc>
 )
 
