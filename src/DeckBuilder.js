@@ -1,7 +1,7 @@
 import './App.css';
 import bestiary from './SpyCards_Bestiary';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 // let banned = ["The Everlasting King"]
 
@@ -36,7 +36,6 @@ let coins = [
     "Acornling", "Cactiling", "Inichas", "Denmuki", "Madesphy", "Bee-Boop", "Wild Chomper",
 ]
 
-// let initialSelected = nonbosses.reduce((tot, e) => { tot[e.name] = 0; return tot; }, {})
 let bosses     = Object.keys(bestiary)
     .filter(e => !redundant.includes(e))
     .filter(e => !awful.includes(e))
@@ -58,6 +57,9 @@ let nonbosses  = Object.keys(bestiary)
 
 
 function BackButton(props) {
+    const location = useLocation()
+    const origin   = location.state?.origin
+
     let previousView = (view) => {
         if (view === "Miniboss") { return "Boss" }
         if (view === "Nonboss") { return "Miniboss" }
@@ -67,7 +69,7 @@ function BackButton(props) {
         <div>
         { props.view === "Boss" ? 
         (
-        <Link to="/">
+        <Link to={origin}>
             <button className="btn btn-primary ml-1">←</button>
         </Link> 
         ) : (
