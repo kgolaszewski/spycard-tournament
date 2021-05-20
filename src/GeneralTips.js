@@ -57,7 +57,7 @@ is worth the trouble!
     
 `
     return (
-        <div className="row mt-5 mb-5">
+        <div className="row mt-5 mb-5 ml-0 mr-0" >
             <div className="col-1" style={{textAlign: "left"}}>
                 <Link to="/tutoriallobby" style={{textAlign: "left"}}>
                     <button className="btn btn-primary ml-1">←</button>

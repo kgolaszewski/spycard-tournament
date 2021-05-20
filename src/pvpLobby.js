@@ -20,7 +20,7 @@ function PvpLobby() {
     }, [])
 
     return (
-    <div className="App row">
+    <div className="App row ml-0 mr-0">
         <div className="col-1" style={{textAlign: "left"}}>
             <Link to="/" style={{textAlign: "left"}}>
                 <button className="btn btn-primary ml-1">←</button>

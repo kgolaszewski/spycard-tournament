@@ -99,7 +99,7 @@ function BosstypeMenu(props) {
                 <div className="row mt-1 ml-1 mr-4">
                     <div className="card-image pl-0">
                         <img 
-                            className="mr-1" width="140px" alt="" src={`${name_to_img(e.name)}`} 
+                            className="mr-1" width="135px" alt="" src={`${name_to_img(e.name)}`} 
                         />
                     </div>
                     <div className="button-tower mt-4 pl-0 pr-0">
@@ -234,7 +234,7 @@ function NonBossMenu(props) {
                 <div key={i} className="row mt-1 mr-4 ml-1">
                     <div className="card-image pl-0">
                         <img className="mr-1" 
-                            width="140px"
+                            width="135px"
                             alt=""
                             src={`${name_to_img(card.name)}`} 
                         />
@@ -378,7 +378,7 @@ function DeckBuilder() {
     }
 
     return (
-        <div className="App row">
+        <div className="App row ml-0 mr-0">
             <div className="col-1" style={{textAlign: "left"}}>
                 <BackButton setCurrentView={setCurrentView} view={currentView} />
             </div>

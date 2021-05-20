@@ -295,7 +295,7 @@ function VsCpu(props) {
 
 
   return (
-    <div className="App row" style={{backgroundColor: "#ababab", width: "100%"}}>
+    <div className="App row ml-0 mr-0" style={{backgroundColor: "#ababab", width: "100%"}}>
       <div className="col-1" id="left-column">
       </div>
       <div id="main-column" className="col-10">
@@ -381,8 +381,8 @@ function VsCpu(props) {
                   </Link>
                   </div>
                   : 
-                  <div>
-                    <p className="" style={{fontSize: "24x", marginBottom: "5px"}}>
+                  <div style={{minHeight: "155px"}}>
+                    <p className="" style={{fontSize: "24px", marginBottom: "5px"}}>
                       <b>GAME OVER</b><br />You lose...
                     </p>
                     <button className="btn btn-primary btn-sm"

@@ -8,7 +8,7 @@ function PracticeLobby(props) {
 
     console.log("decklist", decklist)
     return (
-        <div className="mt-3 row" style={{textAlign: "center"}}>
+        <div className="mt-3 row ml-0 mr-0" style={{textAlign: "center"}}>
 
         <div className="col-1" style={{textAlign: "left"}}>
             <Link to="/" style={{textAlign: "left"}}>

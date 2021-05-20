@@ -56,13 +56,12 @@ the 'weakest N attackers' shortcut doesn't match involves summoned cards.
 
 **A**: No, only count cards **you** played this turn.
 The only card effects that acknowledge your opponent's cards are **Numb**, **Pierce** and **VS**.
-
-##### **Q**: 
-
-**A**: 
 `
+// ##### **Q**: 
+
+// **A**: 
     return (
-        <div className="row mt-5 mb-5">
+        <div className="row mt-5 mb-5 ml-0 mr-0" >
             <div className="col-1" style={{textAlign: "left"}}>
                 <Link to="/tutoriallobby" style={{textAlign: "left"}}>
                     <button className="btn btn-primary ml-1">←</button>

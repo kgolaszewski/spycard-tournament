@@ -24,7 +24,7 @@ function PvpRooms() {
     }, [])
 
     return (
-        <div className="App row">
+        <div className="App row ml-0 mr-0">
         <div 
             className="col-1" 
             style={{textAlign: "left"}}>

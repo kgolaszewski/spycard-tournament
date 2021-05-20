@@ -6,7 +6,7 @@ function TutorialLobby() {
     return (
         <div className="ml-1 mt-3" style={{textAlign: "center"}}>
 
-            <div className="row">
+            <div className="row ml-0 mr-0" >
                 <div  className="col-1" style={{textAlign: "left"}}>
                     <Link to="/" style={{textAlign: "left"}}>
                         <button className="btn btn-primary ml-1">←</button>

@@ -188,7 +188,7 @@ function PvpUI() {
     return (
         <div>
         { ready ?
-        (<div className="App row" style={{backgroundColor: "#ababab", width: "100%"}}>
+        (<div className="App row ml-0 mr-0" style={{backgroundColor: "#ababab", width: "100%"}}>
             <div className="col-1" id="left-column"></div>
         <div id="main-column" className="col-10">
             <div className="mt-1" id="p2-hand" style={{ minHeight: "122px", }} >
