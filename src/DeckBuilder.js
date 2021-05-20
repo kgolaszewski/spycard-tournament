@@ -55,7 +55,6 @@ let nonbosses  = Object.keys(bestiary)
     .map(e => bestiary[e])
     .filter(card => ["effect", "attacker"].includes(card.type))
 
-
 function BackButton(props) {
     const location = useLocation()
     const origin   = location.state?.origin
@@ -69,7 +68,7 @@ function BackButton(props) {
         <div>
         { props.view === "Boss" ? 
         (
-        <Link to={origin}>
+        <Link to={props.origin}>
             <button className="btn btn-primary ml-1">←</button>
         </Link> 
         ) : (
@@ -341,14 +340,8 @@ function ConfirmMenu(props) {
                     onChange={(event) => setDeckname(event.target.value)} 
                     placeholder="Enter deck name here" 
                 />
-                <Link to="/">
-                <button 
-                    className="btn btn-primary ml-1" 
-                    onClick={() => {
-                        console.log("Successful onClick()!");
-                        save_deck();
-                    }}
-                >
+                <Link to={props.origin}>
+                <button className="btn btn-primary ml-1" onClick={() => { save_deck(); }} >
                     Save Deck
                 </button>
                 </Link>
@@ -377,10 +370,13 @@ function DeckBuilder() {
         })
     }
 
+    const location = useLocation()
+    const origin   = location.state?.origin
+
     return (
         <div className="App row ml-0 mr-0">
             <div className="col-1" style={{textAlign: "left"}}>
-                <BackButton setCurrentView={setCurrentView} view={currentView} />
+                <BackButton setCurrentView={setCurrentView} view={currentView} origin={origin}/>
             </div>
             <div className="col-10">
             {
@@ -411,6 +407,7 @@ function DeckBuilder() {
                     <ConfirmMenu 
                         selected={selected} 
                         setCurrentView={setCurrentView}
+                        origin={origin}
                     />
                     )
             }

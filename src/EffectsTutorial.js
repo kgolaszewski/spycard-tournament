@@ -23,7 +23,8 @@ They remain in play, but don't attack.
 
 * **DEF X**: reduce your opponent's ATK by X (*cannot fall below 0 ATK*)
 * **Numb N**:  gain DEF equal to the ATK of your opponent's N weakest Attacker cards
-> Note: playing two cards with "Numb 1" is equivalent to playing one card with Numb 2
+    * **Note**: Numb will target any played/non-summoned cards before it targets any summoned cards 
+    * **Note**: playing two cards with "Numb 1" is equivalent to playing one card with Numb 2
 
 
 ### Summoning
@@ -43,9 +44,10 @@ They remain in play, but don't attack.
 * **ATK+X**: gain X ATK
 * **Pierce X**: reduce enemy DEF by X (*cannot fall below 0*)
 * **Empower +X (T)**: gain X ATK for every card of tribe T you've played this round (including this card)
-* **Unity (X, T)**: gain X ATK for every uniquely-named card of tribe T you've played this round (including this card) if this is the 1st copy of this card you've played this turn
-
-Note: Unity is a weaker, more restricted version of Empower that discourages playing many copies of the same cards
+* **Unity (X, T)**: gain X ATK for every uniquely-named card of tribe T you've played this round (including this card) 
+if this is the 1st copy of this card you've played this turn
+    * **Note**: Unity is a weaker, more restricted version of Empower that discourages 
+playing many copies of the same cards
 
 #  Conditional Card Effects
 ---

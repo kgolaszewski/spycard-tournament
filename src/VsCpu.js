@@ -142,7 +142,6 @@ function VsCpu(props) {
   const [initialized, setInitialized] = useState(false)
   const [turn, setTurn]   = useState(1)
   const [phase, setPhase] = useState("Main Phase")
-  // const [gameWinner, setGameWinner] = useState("")
 
   let tp = Math.min(10, turn + 1)
 
@@ -169,10 +168,6 @@ function VsCpu(props) {
       stats: new_blank_stats(), setup: [], selected: [], selected_tp: 0
     })
   }
-
-  // DEBUGGING PRINTS
-  // eslint-disable-next-line no-unused-vars
-  let print_player = (player) => { console.log(player) }
 
   let draw_n_cards = (player) =>  { 
     let n = player.hand.length > 0 ? Math.min(Math.max(5 - player.hand.length, 0), 2) : 3
@@ -299,14 +294,7 @@ function VsCpu(props) {
       <div className="col-1" id="left-column">
       </div>
       <div id="main-column" className="col-10">
-        {/* HP: {p2.hp} [ATK: {p2.stats.atk}]<br /> */}
-        
-        <div className="mt-1" id="p2-hand"
-            style={{
-                minHeight: "122px", 
-                // border: "1px black solid",
-            }}
-        >
+        <div className="mt-1" id="p2-hand" style={{ minHeight: "122px" }} >
           {p2.hand.map((card, i) => (
                 <img key={"p2-hand-"+i} alt="" className="mr-1" width="82px" 
                   src={render_enemy_card(card)}
@@ -315,15 +303,7 @@ function VsCpu(props) {
           }
         </div>
 
-        <div 
-            style={{
-              minHeight: "155px", 
-              // border: `${p1.hp === 0 || p2.hp === 0 ? "" : "1px black solid"}`,
-              // backgroundColor: "white",
-            }}
-            className="mt-1"
-            id="p2-field"
-        >
+        <div style={{ minHeight: "155px" }} className="mt-1" id="p2-field" >
           { [...p2.field, ...p2.summons].map((card, i) => (
                 <img alt="" key={"p2-field-"+i} className="mr-1"
                     width="110px" 
@@ -333,15 +313,7 @@ function VsCpu(props) {
           )}
         </div>
 
-        <div 
-            style={{
-              minHeight: "155px", 
-              // border: `${p1.hp === 0 || p2.hp === 0 ? "" : "1px black solid"}`,
-              // backgroundColor: "white",
-            }} 
-            className="mt-1"
-            id="player1-field"
-        >
+        <div style={{ minHeight: "155px" }} className="mt-1" id="player1-field" >
           { ["Battle Phase", "End Phase"].includes(phase) ? 
           <div>
             { 
@@ -352,10 +324,6 @@ function VsCpu(props) {
                     src={convert_name_to_image(card)} 
                 />)
               )
-            }
-            {
-            /* <img className="ml-3" src={`${img_folder}/spycard_imgs/atk_icon.png`} /> {p1.stats.atk}
-            <img className="ml-3" src={`${img_folder}/spycard_imgs/def_icon.png`} /> {p1.stats.def} */
             }
           </div> : ""
           }
@@ -402,14 +370,7 @@ function VsCpu(props) {
           }
         </div>
 
-        <div 
-            className="mt-1"
-            style={{
-              minHeight: "155px", 
-              // border: "1px black solid",
-            }}
-            id="player1-hand"
-        >
+        <div className="mt-1" style={{ minHeight: "155px" }} id="player1-hand" >
           { p1.hand.map((card, i) => {
             return (
               <img key={"p1-card-"+i} width="110px"
@@ -482,10 +443,7 @@ function VsCpu(props) {
         </div>
         <div className="mt-1">
           <Icon name="tp" /> {tp-p1.selected_tp}/{tp} TP 
-          {/* (Turn {turn}) */}
         </div>
-        {/* <button onClick={() => print_player(p1)}> Log p1 </button> */}
-        {/* <button onClick={() => print_player(p2)}> Log p2 </button> */}
         <br/>
 
         <div className="row" style={{justifyContent: "center"}}>
