@@ -78,9 +78,9 @@ let chomp2 = [
   scarlet, riz, mother_chomper,
 ]
 
-let default_deck = thug2
-let p1_deck = thug2
-let p2_deck = chomp
+let default_deck = starter_deck
+let p1_deck = starter_deck
+let p2_deck = starter_deck
 
 function Icon(props) {
   let img_folder = process.env.PUBLIC_URL
@@ -308,7 +308,7 @@ function VsCpu(props) {
             }}
         >
           {p2.hand.map((card, i) => (
-                <img key={"p2-hand-"+i} alt="" className="mr-1" width="90px" 
+                <img key={"p2-hand-"+i} alt="" className="mr-1" width="82px" 
                   src={render_enemy_card(card)}
                 />
             ))
@@ -317,7 +317,7 @@ function VsCpu(props) {
 
         <div 
             style={{
-              minHeight: "185px", 
+              minHeight: "155px", 
               // border: `${p1.hp === 0 || p2.hp === 0 ? "" : "1px black solid"}`,
               // backgroundColor: "white",
             }}
@@ -326,7 +326,7 @@ function VsCpu(props) {
         >
           { [...p2.field, ...p2.summons].map((card, i) => (
                 <img alt="" key={"p2-field-"+i} className="mr-1"
-                    width="128px" 
+                    width="110px" 
                     src={convert_name_to_image(card)} 
                 />
             )
@@ -335,7 +335,7 @@ function VsCpu(props) {
 
         <div 
             style={{
-              minHeight: "185px", 
+              minHeight: "155px", 
               // border: `${p1.hp === 0 || p2.hp === 0 ? "" : "1px black solid"}`,
               // backgroundColor: "white",
             }} 
@@ -347,7 +347,7 @@ function VsCpu(props) {
             { 
               [...p1.field, ...p1.summons].map((card, i) => (
                 <img alt="" key={"p1-field-"+i} 
-                    width="128px" 
+                    width="110px" 
                     className="mr-1"
                     src={convert_name_to_image(card)} 
                 />)
@@ -364,8 +364,8 @@ function VsCpu(props) {
               ((p1.hp === 0 || p2.hp === 0) ? 
                 
                 p1.hp > 0 ? 
-                  <div>
-                  <p className="" style={{fontSize: "36px", marginBottom: "0px"}}>
+                  <div style={{minHeight: "155px"}}>
+                  <p className="" style={{fontSize: "24px", marginBottom: "5px"}}>
                     <b>Congratulations!</b><br />You win!
                   </p> 
                   <button className="btn btn-primary btn-sm mt-1"
@@ -382,7 +382,7 @@ function VsCpu(props) {
                   </div>
                   : 
                   <div>
-                    <p className="" style={{fontSize: "36px"}}>
+                    <p className="" style={{fontSize: "24x", marginBottom: "5px"}}>
                       <b>GAME OVER</b><br />You lose...
                     </p>
                     <button className="btn btn-primary btn-sm"
@@ -405,14 +405,14 @@ function VsCpu(props) {
         <div 
             className="mt-1"
             style={{
-              minHeight: "185px", 
+              minHeight: "155px", 
               // border: "1px black solid",
             }}
             id="player1-hand"
         >
           { p1.hand.map((card, i) => {
             return (
-              <img key={"p1-card-"+i} width="120px"
+              <img key={"p1-card-"+i} width="110px"
                 onClick={phase === "Main Phase" ? () => toggle_card(p1, i) : ""} 
                 alt=""
                 className={`mr-2`}
@@ -540,7 +540,7 @@ function VsCpu(props) {
 
         <div className="mt-1" id="p2-field"
           style={{
-            minHeight: "185px",
+            minHeight: "155px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -571,7 +571,7 @@ function VsCpu(props) {
         </div>
 
         <div className="mt-1" style={{
-            minHeight: "185px",
+            minHeight: "155px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -601,7 +601,7 @@ function VsCpu(props) {
         </div>
 
         <div className="mt-1" style={{
-            minHeight: "180px",
+            minHeight: "155px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

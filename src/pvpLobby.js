@@ -7,7 +7,7 @@ import { socket } from './socket';
 function PvpLobby() {
     let [username, setUsername] = useState("")
     let store_username = (username) => { sessionStorage.setItem("username", username) }
-    let [registered, setRegistered] = useState(false)
+    let [registered, setRegistered] = useState(!!sessionStorage.getItem("username"))
 
     const newRoomId = uuidv4()
 
@@ -45,7 +45,7 @@ function PvpLobby() {
                     { !deck ? (<option selectedValue value="">Choose...</option>) : "" }
                     {
                         decklist.map(deckname => (
-                            <option selected={deck === deckname ? "selected" : "" }value={deckname}>
+                            <option selected={deck === deckname ? "selected" : "" } value={deckname}>
                                 {deckname}
                             </option>
                         ))

@@ -40,7 +40,7 @@ function PvpUI() {
     const location = useLocation()
     const user = sessionStorage.getItem("username")
     const localdeck = sessionStorage.getItem("deck") === "DefaultDeck" ? 
-        '{"Chomper":12,"Zasp":1,"Mothiva":1,"Mother Chomper":1}'
+        '{"Numbnail":2,"Chomper":2,"Underling":4,"Wasp Trooper": 4,"Zasp":1,"Mothiva":1,"Spider":1}'
             : 
         localStorage.getItem(`spydeck_${sessionStorage.getItem("deck")}`)
     const roomId = location.state?.roomId
@@ -52,6 +52,8 @@ function PvpUI() {
     let [phase, setPhase] = useState("Main Phase")
     let [submitted, setSubmitted] = useState(false)
     let [result, setResult] = useState("")
+    let [aborted, setAborted] = useState(false)
+    let [empty, setEmpty] = useState(false)
 
     let tp = Math.min(10, turn + 1)
     let new_blank_stats = () => ({"heal":0,"lifesteal":0,"numb":0,"atk":0,"def":0,"numb_def":0,"atk_or_def":[]})
@@ -133,6 +135,16 @@ function PvpUI() {
             setResult(user === winner ? "W" : "L") 
         })
 
+        socket.on("match-abort", () => {
+            setAborted(true)
+            setEmpty(true)
+            console.log("match-abort detected")
+        })
+
+        socket.on("rematch-declined", () => {
+            setEmpty(true)
+        })
+
         return function cleanup() {
             socket.emit("player-disconnect")
         }
@@ -182,45 +194,63 @@ function PvpUI() {
             <div className="mt-1" id="p2-hand" style={{ minHeight: "122px", }} >
             {
                 p2.hand.map((card, i) => (
-                    <img key={"p2-hand-"+i} alt="" className="mr-1" width="90px" src={render_enemy_card(card)}/>
+                    <img key={"p2-hand-"+i} alt="" className="mr-1" width="82px" src={render_enemy_card(card)}/>
                 ))
             }
             </div>
 
-            <div id="p2-field" className="mt-1" style={{ minHeight: "185px", }} >
+            <div id="p2-field" className="mt-1" style={{ minHeight: "155px", }} >
             {
                 [...p2.field, ...p2.summons].map((card, i) => (
-                    <img alt="" key={"p2-field-"+i} className="mr-1" width="128px" 
+                    <img alt="" key={"p2-field-"+i} className="mr-1" width="110px" 
                         src={convert_name_to_image(card)} 
                     />
                 ))
             }
             </div>
 
-            {!result ? 
-            <div id="player1-field" className="mt-1" style={{ minHeight: "185px", }} >
-            { 
+            { !result ? 
+            (
+            <div id="player1-field" className="mt-1" style={{ minHeight: "155px", }} >
+            { ((!aborted) || (aborted && phase !== "Main Phase")) ? 
                 [...p1.field, ...p1.summons].map((card, i) => (
-                    <img alt="" key={"p1-field-"+i} className="mr-1" width="128px" 
+                    <img alt="" key={"p1-field-"+i} className="mr-1" width="110px" 
                         src={convert_name_to_image(card)} 
                     />
-                ))
+                )) : 
+                <div>
+                    <p style={{fontSize: "30px"}}>
+                        <b>Your opponent has disconnected.</b><br/> 
+                        </p>
+                    <button className="btn btn-success"
+                        onClick={() => socket.emit("claim-disconnect-win", {
+                            player: user,
+                            room: roomId
+                        })}
+                    >
+                        Claim Victory
+                    </button>
+                </div>
             }
-            </div> :
-            <div className="mt-1" style={{minHeight: "185px"}}>
+            </div>
+            ) 
+                :
+            (
+            <div className="mt-1" style={{minHeight: "155px"}}>
                 {
                 result === "W" ? 
-                    <p className="" style={{fontSize: "30px"}}>
+                    <p className="" style={{fontSize: "24px", marginBottom: "5px"}}>
                         <b>Congratulations!</b><br />You win!
                     </p> 
                         :
-                    <p className="" style={{fontSize: "30px"}}>
+                    <p className="" style={{fontSize: "24px", marginBottom: "5px" }}>
                         <b>GAME OVER</b><br />You lose.
                     </p> 
                 }
+                { empty === false ?
+                (
                 <button 
-                    className="btn btn-primary btn-sm" 
-                    style={{minWidth:"150px"}} 
+                    className="btn btn-primary btn-sm" style={{minWidth:"150px"}} 
                     onClick={() => {socket.emit("rematch-request", {
                         room: roomId,
                         player: user,
@@ -228,19 +258,30 @@ function PvpUI() {
                     })}}
                 >
                     Request Rematch
-                </button><br />
+                </button>
+                ) 
+                    : 
+                (
+                <button className="btn btn-secondary btn-sm" style={{minWidth:"150px"}} disabled="disabled">
+                    Room is Empty
+                </button>
+                )
+
+                }
+                <br />
                 <Link to="/pvplobby">
                     <button className="btn btn-info btn-sm mt-1" style={{minWidth:"150px"}}>
                         Leave Room
                     </button>
                 </Link>
             </div>
+            )
             }
 
-            <div id="player1-hand" className="mt-1" style={{ minHeight: "185px", }} >
+            <div id="p1-hand" className="mt-1" style={{ minHeight: "155px", }} >
             { p1.hand.map((card, i) => {
                 return (
-                <img key={"p1-card-"+i} width="120px" alt="" className={`mr-2`}
+                <img key={"p1-card-"+i} width="110px" alt="" className={`mr-2`}
                     onClick={() => toggle_card(p1, i)} 
                     style={{outline: p1.selected[i] ? "3px yellow solid" : ""}}
                     src={convert_name_to_image(card)} 
@@ -249,8 +290,8 @@ function PvpUI() {
             })}
             </div>
             
-            <div id="phase-action-button" className="mt-1" >
-            { phase === "Main Phase" && submitted === false ?
+            <div id="phase-action-button" className="mt-2" >
+            { (phase === "Main Phase") && (submitted === false) && (!result) ?
             <button 
                 className={`btn 
                     btn-${p1.selected_tp !== 0 ? (tp >= p1.selected_tp ? "success" : "danger") : "warning"}
@@ -266,8 +307,9 @@ function PvpUI() {
                     "Insufficient TP"
             }
             </button>
-            : <button className="btn btn-dark" disabled="disabled" style={{minWidth: "200px"}}>
-                {phase !== "Main Phase" ? phase : "Waiting for opponent..."}
+            : 
+            <button className="btn btn-dark" disabled="disabled" style={{minWidth: "200px"}}>
+                {phase !== "Main Phase" ? phase : (result ? "Game Over" : "Waiting for opponent...")}
             </button>
             }
 
@@ -301,14 +343,14 @@ function PvpUI() {
             </div>
 
             <div className="mt-1" id="p2-field"
-                style={{ minHeight: "185px",
+                style={{ minHeight: "155px",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 }}
             >
                 <CombatStats player={p2} />
             </div>
 
-            <div className="mt-1" style={{ minHeight: "185px",
+            <div className="mt-1" style={{ minHeight: "155px",
                     display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                 }}
             >
@@ -316,7 +358,7 @@ function PvpUI() {
             </div>
 
             <div className="mt-1" style={{
-                minHeight: "180px",
+                minHeight: "155px",
                 display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
             }}
             >

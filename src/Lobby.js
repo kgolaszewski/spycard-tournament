@@ -6,11 +6,17 @@ function Lobby() {
 
     return (
         <div className="ml-1 mt-3" style={{textAlign: "center"}}>
-            <h1 className="mb-5" style={{textAlign: "center"}}>SpyCards Lobby</h1> 
+            <h1 className="mb-5" style={{textAlign: "center"}}>SpyCards Online</h1> 
+            <img 
+                src={`${process.env.PUBLIC_URL}/spyLogo.png`} 
+                height="250px"
+                width="250px"
+                className="mb-5"
+            /> <br/>
 
             <Link to="/tutoriallobby">
-                <button className="btn btn-dark mt-1" style={{minWidth: "180px"}}>
-                    SpyCards 101
+                <button className="btn btn-success mt-1" style={{minWidth: "180px"}}>
+                    Learn to Play!
                 </button>
             </Link>
             <br />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function PracticeLobby(props) {
     let decklist = localStorage.getItem("decks") ? JSON.parse(localStorage.getItem("decks")) : ["DefaultDeck"]
-    let [deck, setDeck] = useState("")
+    let [deck, setDeck] = useState(sessionStorage.getItem("deck"))
 
     console.log("decklist", decklist)
     return (
@@ -30,7 +30,7 @@ function PracticeLobby(props) {
                     { !deck ? (<option selectedValue value="">Choose...</option>) : "" }
                     {
                         decklist.map(deckname => (
-                            <option value={deckname}>
+                            <option selected={deck === deckname ? "selected" : "" } value={deckname}>
                                 {deckname}
                             </option>
                         ))

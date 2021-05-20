@@ -1,6 +1,7 @@
 import './App.css';
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import { Link } from 'react-router-dom';
 
 function GeneralTips() {
     const markdown = `
@@ -55,11 +56,14 @@ is worth the trouble!
 
     
 `
-    const markdown2 = "# Hello World\nI am *alive*."
-
     return (
         <div className="row mt-5 mb-5">
-            <div className="offset-2 col-8">
+            <div className="col-1" style={{textAlign: "left"}}>
+                <Link to="/tutoriallobby" style={{textAlign: "left"}}>
+                    <button className="btn btn-primary ml-1">←</button>
+                </Link>
+            </div>
+            <div className="offset-1 col-8">
             <ReactMarkdown>
                 {markdown}
             </ReactMarkdown>
