@@ -13,6 +13,9 @@
     "socket.io-client": "^4.0.2",
     "web-vitals": "^1.1.2"
   },
+  "engines": {
+    "node": "21.x"
+  },
   "scripts": {
     "start": "react-scripts start",
     "localboot": "concurrently \"npm run server\" \"react-scripts start\"",
