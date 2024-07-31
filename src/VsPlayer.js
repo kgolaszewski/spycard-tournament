@@ -1,4 +1,4 @@
-import './App.css';
+import './CSS/App.css';
 // import bestiary from './SpyCards_Bestiary';
 import React, { useState, useEffect } from 'react';
 import { socket } from './socket';
@@ -35,7 +35,7 @@ function CombatStats(props) {
     )
 }
 
-function PvpUI() {
+function VsPlayer() {
     const img_folder = process.env.PUBLIC_URL
     const location = useLocation()
     const user = sessionStorage.getItem("username")
@@ -44,6 +44,7 @@ function PvpUI() {
             : 
         localStorage.getItem(`spydeck_${sessionStorage.getItem("deck")}`)
     const roomId = location.state?.roomId
+
 
     let [ready, setReady] = useState(false)
 
@@ -377,4 +378,4 @@ function PvpUI() {
     );
 }
 
-export default PvpUI;
+export default VsPlayer;

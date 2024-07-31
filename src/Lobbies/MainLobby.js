@@ -1,13 +1,14 @@
-import './App.css';
+import '../CSS/App.css';
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-function Lobby() {
+function MainLobby() {
 
     return (
         <div className="ml-1 mt-3" style={{textAlign: "center"}}>
-            <h1 className="mb-5" style={{textAlign: "center"}}>SpyCards Online</h1> 
+            <h1 className="mb-5 page-title" style={{textAlign: "center"}}>SpyCards Online</h1> 
             <img 
+                alt="SpyCards Logo"
                 src={`${process.env.PUBLIC_URL}/spyLogo.png`} 
                 height="250px"
                 width="250px"
@@ -37,4 +38,4 @@ function Lobby() {
     )
 }
 
-export default Lobby;
+export default MainLobby;

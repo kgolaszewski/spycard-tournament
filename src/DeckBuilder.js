@@ -1,7 +1,7 @@
-import './App.css';
-import bestiary from './SpyCards_Bestiary';
+import './CSS/App.css';
+import bestiary from './Gameplay/SpyCards_Bestiary';
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 // let banned = ["The Everlasting King"]
 
@@ -56,8 +56,6 @@ let nonbosses  = Object.keys(bestiary)
     .filter(card => ["effect", "attacker"].includes(card.type))
 
 function BackButton(props) {
-    const location = useLocation()
-    const origin   = location.state?.origin
 
     let previousView = (view) => {
         if (view === "Miniboss") { return "Boss" }
@@ -65,25 +63,26 @@ function BackButton(props) {
         if (view === "ConfirmMenu") { return "Nonboss"}
     }
     return (
-        <div>
+        <div onClick={() => console.log("\n", props.origin)}>
         { props.view === "Boss" ? 
-        (
-        <Link to={props.origin}>
-            <button className="btn btn-primary ml-1">←</button>
-        </Link> 
-        ) : (
-        <button 
-            className="btn btn-primary ml-1"
-            onClick={() => props.setCurrentView(previousView(props.view))}
-        >
-            ←
-        </button>
-        )
+            (
+                <button onClick={() => props.navigate(-1)}className="btn btn-primary ml-1">←</button>
+            ) 
+                : 
+            (
+            <button  
+                className="btn btn-primary ml-1"
+                onClick={() => props.setCurrentView(previousView(props.view))}
+            >
+                ←
+            </button>
+            )
         }
         </div>
     )
 }
 
+// use same Component for Boss & Miniboss card menus
 function BosstypeMenu(props) {
     let img_folder = process.env.PUBLIC_URL
     let name_to_img = (cardname) => {
@@ -92,10 +91,10 @@ function BosstypeMenu(props) {
     }
 
     return (
-        <div className="row ml-3 mt-3" style={{width: "98%"}} >
+        <div className="row ms-3 mt-3" style={{width: "98%"}} >
         {
-            props.boss_group.map(e => (
-                <div className="row mt-1 ml-1 mr-4">
+            props.boss_group.map((e, i) => (
+                <div key={`${props.boss_group}-${i}`} className="col-2 row mt-1 ml-1 mr-4">
                     <div className="card-image pl-0">
                         <img 
                             className="mr-1" width="135px" alt="" src={`${name_to_img(e.name)}`} 
@@ -230,7 +229,7 @@ function NonBossMenu(props) {
         <div className="row ml-3 mt-3" >
         {
             nonbosses.map((card, i) => (
-                <div key={i} className="row mt-1 mr-4 ml-1">
+                <div key={i} className="row col-md mt-1 mr-4 ml-1">
                     <div className="card-image pl-0">
                         <img className="mr-1" 
                             width="135px"
@@ -314,10 +313,13 @@ function ConfirmMenu(props) {
     let [deckname, setDeckname] = useState("")
 
     const save_deck = () => {
+        // if this is the first deck you've built, set it as your selected deck
+        if (!localStorage.getItem("decks")) { sessionStorage.setItem("deck", deckname)}
         let decks_value = localStorage.getItem("decks") ? 
             JSON.stringify([...JSON.parse(localStorage.getItem("decks")), deckname])
                 : 
             JSON.stringify([deckname])
+        console.log(deckname, decks_value, sessionStorage.getItem("deck"))
         localStorage.setItem("decks", decks_value)
         localStorage.setItem(`spydeck_${deckname}`, JSON.stringify(final_deck))
     }
@@ -326,8 +328,8 @@ function ConfirmMenu(props) {
         <div>
             <h1 style={{textAlign: "center"}}>Deck List</h1>
             {
-                final_selection.map(e => (
-                    <div className="row" style={{textAlign: "left"}}>
+                final_selection.map((e, i) => (
+                    <div className="row" key={`cardcount-${i}`} style={{textAlign: "left"}}>
                         <div className="offset-5 col-2">
                             <b>{e[0]}: </b>
                         </div>
@@ -340,17 +342,23 @@ function ConfirmMenu(props) {
                     onChange={(event) => setDeckname(event.target.value)} 
                     placeholder="Enter deck name here" 
                 />
-                <Link to={props.origin}>
-                <button className="btn btn-primary ml-1" onClick={() => { save_deck(); }} >
+                {/* <Link to={props.origin}> */}
+                <button className="btn btn-primary ml-1" 
+                    onClick={() => { 
+                        save_deck(); 
+                        props.navigate(-1); 
+                    }} >
                     Save Deck
                 </button>
-                </Link>
+                {/* </Link> */}
             </div>
         </div>
     )
 }
 
 function DeckBuilder() {
+    const navigate = useNavigate();
+
     let initialSelected = {
         "boss": bosses.reduce((tot, card) => { tot[card.name] = 0; return tot; }, {}),
         "miniboss": minibosses.reduce((tot, card) => { tot[card.name] = 0; return tot; }, {}),
@@ -370,13 +378,10 @@ function DeckBuilder() {
         })
     }
 
-    const location = useLocation()
-    const origin   = location.state?.origin
-
     return (
         <div className="App row ml-0 mr-0">
             <div className="col-1" style={{textAlign: "left"}}>
-                <BackButton setCurrentView={setCurrentView} view={currentView} origin={origin}/>
+                <BackButton setCurrentView={setCurrentView} view={currentView} navigate={navigate} />
             </div>
             <div className="col-10">
             {
@@ -407,7 +412,7 @@ function DeckBuilder() {
                     <ConfirmMenu 
                         selected={selected} 
                         setCurrentView={setCurrentView}
-                        origin={origin}
+                        navigate={navigate}
                     />
                     )
             }

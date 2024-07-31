@@ -1,13 +1,17 @@
-import './App.css';
+import '../CSS/App.css';
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-import { socket } from './socket';
+import { socket } from '../socket';
+import DeckSelector from '../Components/DeckSelector';
 
 function PvpLobby() {
+    const navigate = useNavigate()
+
     let [username, setUsername] = useState("")
-    let store_username = (username) => { sessionStorage.setItem("username", username) }
     let [registered, setRegistered] = useState(!!sessionStorage.getItem("username"))
+    
+    const store_username = (username) => { sessionStorage.setItem("username", username) }
 
     const newRoomId = uuidv4()
 
@@ -34,24 +38,7 @@ function PvpLobby() {
             registered ?
             (<div>
                 <h4>Welcome, {sessionStorage.getItem("username")}</h4>
-                <div className="mt-3 mb-3">
-                <strong style={{fontSize: "20px"}}>Deck: </strong>
-                <select 
-                    className="custom-select ml-1" 
-                    style={{width: "15%"}}
-                    onChange={(e) => { setDeck(e.target.value); sessionStorage.setItem("deck", e.target.value) }}
-                    value={deck}
-                >
-                    { !deck ? (<option selectedValue value="">Choose...</option>) : "" }
-                    {
-                        decklist.map(deckname => (
-                            <option selected={deck === deckname ? "selected" : "" } value={deckname}>
-                                {deckname}
-                            </option>
-                        ))
-                    }
-                </select>
-            </div>
+                <DeckSelector deck={deck} decklist={decklist} setDeck={setDeck} />
 
             <Link to={{ pathname: "/deckbuilder", state: {origin: "/pvplobby"}}}>
             <button className="btn btn-dark mt-1" style={{minWidth: "150px"}}>
@@ -62,18 +49,15 @@ function PvpLobby() {
 
             { deck ?
             (<div>
-            <Link to= {{pathname: "/pvpvs", state: { roomId: newRoomId } }} >
             <button 
                 className="btn btn-primary mt-1" style={{minWidth: "150px"}}
-                onClick={() => { socket.emit( "create-room", {
-                            "room": newRoomId,
-                            "user": sessionStorage.getItem("username")
-                    })
+                onClick={() => { 
+                    socket.emit( "create-room", { "room": newRoomId, "user": sessionStorage.getItem("username")});
+                    navigate("/pvpvs", { state: { roomId: newRoomId } })
                 }}
             >
                 Create Room
             </button>
-            </Link>
             <br />
 
             <Link to="/pvprooms">

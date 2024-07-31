@@ -1,10 +1,12 @@
-import './App.css';
+import './CSS/App.css';
 import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom';
-import { Link } from "react-router-dom";
-import {socket} from './socket';
+import { Link, useNavigate } from "react-router-dom";
+import { socket } from './socket';
 
 function PvpRooms() {
+
+    const navigate = useNavigate()
 
     let [rooms, setRooms] = useState([])
 
@@ -39,24 +41,26 @@ function PvpRooms() {
             {
                 rooms.map(e => (
                     <div className="mt-1">
-                    <Link to= {{pathname: "/pvpvs", state: { roomId: e} }} >
+                    {/* <Link to= {{pathname: "/pvpvs", state: { roomId: e} }} > */}
                     <button 
                         className="btn btn-outline-dark" 
                         style={{minWidth: "500px"}}
                         key={e}
                         onClick={() => {
+                            navigate("/pvpvs", { state: { roomId: e } });
+                            // console.log({ state: { roomId: e } })
                             socket.emit(
                                 "join-room", 
                                 {
                                     "room": e,
                                     "user": sessionStorage.getItem("username")
                                 }
-                            )
+                            );
                         }}
                     >
                         Join Room: {e}
                     </button>
-                    </Link>
+                    {/* </Link> */}
                     </div>
                 ))
             }

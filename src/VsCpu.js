@@ -1,6 +1,5 @@
-import './App.css';
-import bestiary from './SpyCards_Bestiary';
-import find_best_hand from './aiLogic';
+import './CSS/App.css';
+import find_best_hand from './Gameplay/aiLogic';
 import { Link, useLocation } from "react-router-dom";
 
 import React, { useState, useEffect } from 'react';
@@ -8,79 +7,14 @@ import {
   calc_independent_stats,
   calc_enemy_dependent_abilities,
   determine_turn_winner
-} from './EvaluateCombat';
+} from './Gameplay/EvaluateCombat';
 
-let b = bestiary
+import bestiary from './Gameplay/SpyCards_Bestiary';
+import prebuilts from './Gameplay/prebuiltDecks'
 
-// Thuglife Cards
-let [
-  // eslint-disable-next-line no-unused-vars
-    thief, bandit, burglar, astotheles, scarlet, king, ultimax_tank,
-    // eslint-disable-next-line no-unused-vars
-    chomper, chomper_brute, mother_chomper, zombeetle, belostoss, riz, spider, 
-    wasp_trooper, underling, zasp, mothiva, leafbug_archer, leafbug_ninja, leafbug_clubber,
-    // eslint-disable-next-line no-unused-vars
-    tidal_wyrm, devourer, seedling_king, false_monarch, peacock_spider,
-    // eslint-disable-next-line no-unused-vars
-    mender, weevil, seedling, dune_scorpion, golden_seedling, kabbu, heavy_drone_bee,
-    // eslint-disable-next-line no-unused-vars
-    security_turret, krawler, warden, bee_boop, numbnail
-  ] = [
-    "Thief", "Bandit", "Burglar", "Astotheles", "Scarlet", "The Everlasting King", "Ultimax Tank",
-    "Chomper","Chomper Brute","Mother Chomper", "Zombeetle", "Belostoss", "Riz", "Spider", 
-    "Wasp Trooper", "Underling", "Zasp", "Mothiva", "Leafbug Archer", "Leafbug Ninja", "Leafbug Clubber",
-    "Tidal Wyrm", "Devourer", "Seedling King", "False Monarch", "Peacock Spider",
-    "Mender", "Weevil", "Seedling", "Dune Scorpion", "Golden Seedling", "Kabbu", "Heavy Drone B-33",
-    "Security Turret", "Krawler", "Warden", "Bee-Boop", "Numbnail",
-  ].map(e => b[e])
-
-
-  // eslint-disable-next-line no-unused-vars
-let thuglife = [
-    thief, thief, thief, thief, bandit, bandit, bandit, bandit, 
-    burglar, burglar, burglar, golden_seedling, astotheles, scarlet, ultimax_tank,
-]
-
-let thug2 = [
-  thief, thief,  numbnail, numbnail, bandit, bandit, bandit, bandit, 
-  burglar, burglar, burglar, golden_seedling, astotheles, scarlet, ultimax_tank,
-]
-
-// eslint-disable-next-line no-unused-vars
-let starter_deck = [
-  chomper, chomper, chomper, chomper, underling, underling, underling, underling, 
-  wasp_trooper, wasp_trooper, wasp_trooper, wasp_trooper, zasp, mothiva, spider
-]
-
-// eslint-disable-next-line no-unused-vars
-let leafthug = [
-  ultimax_tank, zasp, mothiva, leafbug_archer, leafbug_archer, leafbug_archer, thief, thief, 
-  leafbug_ninja, leafbug_ninja, leafbug_ninja, leafbug_clubber, leafbug_clubber, bandit, bandit,
-]
-
-// eslint-disable-next-line no-unused-vars
-let degenlife = [
-  mender, mender, mender, mender, krawler, krawler, krawler, krawler, 
-  warden, warden, warden, warden, scarlet, dune_scorpion, heavy_drone_bee,
-]
-
-// eslint-disable-next-line no-unused-vars
-let chomp = [
-  chomper, chomper, chomper, chomper, chomper,  bandit, bandit, 
-  chomper_brute, chomper_brute, chomper_brute, chomper_brute,
-  golden_seedling, scarlet, dune_scorpion, mother_chomper,
-]
-
-// eslint-disable-next-line no-unused-vars
-let chomp2 = [
-  chomper, chomper, chomper, chomper, chomper, bandit, bandit, 
-  chomper_brute, chomper_brute, chomper_brute, zombeetle, zombeetle, 
-  scarlet, riz, mother_chomper,
-]
-
-let default_deck = starter_deck
-let p1_deck = starter_deck
-let p2_deck = starter_deck
+let default_deck = prebuilts.starter_deck
+let p1_deck = prebuilts.starter_deck
+let p2_deck = prebuilts.starter_deck
 
 function Icon(props) {
   let img_folder = process.env.PUBLIC_URL
@@ -112,17 +46,24 @@ function VsCpu(props) {
 
   let player_selected_deck = location.state?.p1_deck
 
+  console.log("location.state", location.state)
+
   if (player_selected_deck) { 
-    if (player_selected_deck === "DefaultDeck") {
-      p1_deck = default_deck
-    }
-    else {
-      console.log("player_selected_deck", player_selected_deck)
-      let localstored_deck = localStorage.getItem(`spydeck_${player_selected_deck}`)
-      console.log("localstored_deck", localstored_deck)
-      console.log("pre-convert")
-      p1_deck = jsonstring_to_deck(localstored_deck) 
-    }
+    p1_deck = player_selected_deck === "DefaultDeck" ? 
+      default_deck 
+        : 
+      jsonstring_to_deck(localStorage.getItem(`spydeck_${player_selected_deck}`))
+
+    // if (player_selected_deck === "DefaultDeck") {
+    //   p1_deck = default_deck
+    // }
+    // else {
+    //   console.log("player_selected_deck", player_selected_deck)
+    //   let localstored_deck = localStorage.getItem(`spydeck_${player_selected_deck}`)
+    //   console.log("localstored_deck", localstored_deck)
+    //   console.log("pre-convert")
+    //   p1_deck = jsonstring_to_deck(localstored_deck) 
+    // }
   }
 
   let shuffle_deck = (deck) => {
@@ -446,10 +387,13 @@ function VsCpu(props) {
         </div>
         <br/>
 
-        <div className="row" style={{justifyContent: "center"}}>
+        <div 
+          className="row" 
+          style={{justifyContent: "center"}}
+        >
 
           <button className="btn btn-danger"
-              style={{minWidth:"150px"}}
+              style={{minWidth:"150px", maxWidth: "150px"}}
               onClick={() => startNewGame()}
             >
               Start New Game

@@ -1,35 +1,42 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import Lobby from './Lobby'
-import VsCpu from './VsCpu'
-import DeckBuilder from './DeckBuilder'
-import PvpLobby from './pvpLobby'
-import PvpRooms from './pvpRooms'
-import PvpUi from './pvpUI'
-import EffectsTutorial from './EffectsTutorial';
-import HowToPlay from './HowToPlay';
-import GeneralTips from './GeneralTips';
-import RulesFAQ from './RulesFAQ';
-import TutorialLobby from './TutorialLobby';
-import PracticeLobby from './PracticeLobby';
+import { Routes, Route } from 'react-router-dom';
 
-const Hoc = props => props.children;
+import DeckBuilder from './DeckBuilder'
+import PvpRooms from './PvpRooms'
+
+import VsCpu from './VsCpu'
+import VsPlayer from './VsPlayer'
+
+import EffectsTutorial from './Tutorials/EffectsTutorial';
+import HowToPlay from './Tutorials/HowToPlay';
+import GeneralTips from './Tutorials/GeneralTips';
+import RulesFAQ from './Tutorials/RulesFAQ';
+
+import MainLobby from './Lobbies/MainLobby'
+import PvpLobby from './Lobbies/PvpLobby'
+import TutorialLobby from './Lobbies/TutorialLobby';
+import CpuLobby from './Lobbies/CpuLobby';
+
+// const Hoc = props => props.children;
 
 const BaseRouter = () => (
-    <Hoc>
-        <Route exact path="/deckbuilder" component={DeckBuilder} />
-        <Route exact path="/vs" component={VsCpu} />
-        <Route exact path="/" component={Lobby} />
-        <Route exact path="/pvplobby" component={PvpLobby} />
-        <Route exact path="/pvprooms" component={PvpRooms} />
-        <Route exact path="/pvpvs" component={PvpUi} />
-        <Route exact path="/effectstutorial" component={EffectsTutorial} />
-        <Route exact path="/howtoplay" component={HowToPlay} />
-        <Route exact path="/generaltips" component={GeneralTips} />
-        <Route exact path="/faq" component={RulesFAQ} />
-        <Route exact path="/tutoriallobby" component={TutorialLobby} />
-        <Route exact path="/practicelobby" component={PracticeLobby} />
-    </Hoc>
+    <Routes>
+        <Route exact path="/deckbuilder" element={<DeckBuilder/>} />
+        <Route exact path="/pvprooms" element={<PvpRooms/>} />
+
+        <Route exact path="/vs" element={<VsCpu/>} />
+        <Route exact path="/pvpvs" element={<VsPlayer/>} />
+
+        <Route exact path="/effectstutorial" element={<EffectsTutorial/>} />
+        <Route exact path="/howtoplay" element={<HowToPlay/>} />
+        <Route exact path="/generaltips" element={<GeneralTips/>} />
+        <Route exact path="/faq" element={<RulesFAQ/>} />
+        
+        <Route exact path="/" element={<MainLobby/>} />
+        <Route exact path="/pvplobby" element={<PvpLobby/>} />
+        <Route exact path="/tutoriallobby" element={<TutorialLobby/>} />
+        <Route exact path="/practicelobby" element={<CpuLobby/>} />
+    </Routes>
 )
 
 export default BaseRouter;
